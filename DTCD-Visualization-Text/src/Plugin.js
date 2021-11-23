@@ -9,6 +9,8 @@ import {
 
 export class VisualizationText extends PanelPlugin {
 
+  #title;
+
   static getRegistrationMeta() {
     return pluginMeta;
   }
@@ -27,11 +29,23 @@ export class VisualizationText extends PanelPlugin {
     }).$mount(selector);
 
     this.vueComponent = view.$children[0];
+    this.#title = 'Текст';
   }
 
-  setPluginConfig(config = {}) {}
+  setPluginConfig(config = {}) {
+    const { title } = config;
 
-  getPluginConfig() {}
+    if (typeof title === 'string') {
+      this.#title = title;
+      this.vueComponent.setTitle(title);
+    }
+  }
+
+  getPluginConfig() {
+    const config = {};
+    if (this.#title) config.title = this.#title;
+    return config;
+  }
 
   setFormSettings() {}
 

@@ -10,7 +10,7 @@ export default {
   data: (self) => ({
     logSystem: self.$root.logSystem,
     eventSystem: self.$root.eventSystem,
-    title: 'План мероприятий по управлению риском снижения объёмов перевозок в ПВ',
+    title: 'Текст',
   }),
   methods: {
     setTitle(text = '') {
