@@ -1,21 +1,16 @@
 import pluginMeta from './Plugin.Meta';
 import PluginComponent from './PluginComponent.vue';
 
-import {
-  PanelPlugin,
-  LogSystemAdapter,
-  EventSystemAdapter,
-} from './../../DTCD-SDK';
+import { PanelPlugin, LogSystemAdapter, EventSystemAdapter } from './../../DTCD-SDK';
 
 export class VisualizationText extends PanelPlugin {
-
   #title;
 
   static getRegistrationMeta() {
     return pluginMeta;
   }
 
-  constructor (guid, selector) {
+  constructor(guid, selector) {
     super();
 
     const logSystem = new LogSystemAdapter(guid, pluginMeta.name);
@@ -47,8 +42,26 @@ export class VisualizationText extends PanelPlugin {
     return config;
   }
 
-  setFormSettings() {}
+  setFormSettings(config) {
+    return this.setPluginConfig(config);
+  }
 
-  getFormSettings() {}
-
+  getFormSettings() {
+    return {
+      fields: [
+        {
+          component: 'title',
+          propValue: 'Общие настройки',
+        },
+        {
+          component: 'text',
+          propName: 'title',
+          attrs: {
+            label: 'Отображаемый текст',
+            required: true,
+          },
+        },
+      ],
+    };
+  }
 }
