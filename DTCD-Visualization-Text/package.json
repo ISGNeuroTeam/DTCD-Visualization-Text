@@ -1,9 +1,9 @@
 {
-  "name": "dtcd-visualization-barchart",
+  "name": "dtcd-visualization-text",
   "version": "0.1.0",
-  "description": "Panel with barchart visualization",
+  "description": "Panel with text visualization",
   "private": true,
-  "homepage": "https://github.com/ISGNeuroTeam/DTCD-Visualization-BarChart",
+  "homepage": "https://github.com/ISGNeuroTeam/DTCD-Visualization-Text",
   "scripts": {
     "build": "rollup -c",
     "dev": "rollup -cw",
