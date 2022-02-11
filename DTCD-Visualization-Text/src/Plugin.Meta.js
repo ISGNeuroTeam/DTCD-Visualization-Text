@@ -1,7 +1,9 @@
+import { version } from './../package.json';
+
 export default {
+  version,
   type: 'panel',
   name: 'Visualization_Text',
   title: 'Визуализация - Текст',
-  version: '0.1.0',
   withDependencies: true,
 };
