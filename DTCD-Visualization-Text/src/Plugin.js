@@ -4,6 +4,7 @@ import PluginComponent from './PluginComponent.vue';
 import { PanelPlugin, LogSystemAdapter, EventSystemAdapter } from './../../DTCD-SDK';
 
 export class VisualizationText extends PanelPlugin {
+
   #title;
 
   static getRegistrationMeta() {
@@ -13,8 +14,8 @@ export class VisualizationText extends PanelPlugin {
   constructor(guid, selector) {
     super();
 
-    const logSystem = new LogSystemAdapter(guid, pluginMeta.name);
-    const eventSystem = new EventSystemAdapter();
+    const logSystem = new LogSystemAdapter('0.5.0', guid, pluginMeta.name);
+    const eventSystem = new EventSystemAdapter('0.4.0');
 
     const { default: VueJS } = this.getDependence('Vue');
 
@@ -64,4 +65,5 @@ export class VisualizationText extends PanelPlugin {
       ],
     };
   }
+
 }
