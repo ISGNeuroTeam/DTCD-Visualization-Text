@@ -14,8 +14,8 @@ export class VisualizationText extends PanelPlugin {
   constructor(guid, selector) {
     super();
 
-    const logSystem = new LogSystemAdapter('0.4.0', guid, pluginMeta.name);
-    const eventSystem = new EventSystemAdapter('0.3.0');
+    const logSystem = new LogSystemAdapter('0.5.0', guid, pluginMeta.name);
+    const eventSystem = new EventSystemAdapter('0.4.0');
 
     const { default: VueJS } = this.getDependence('Vue');
 
