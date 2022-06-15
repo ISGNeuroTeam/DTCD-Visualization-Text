@@ -1,25 +1,39 @@
 <template>
-  <div class="visualization-text-container">
-    <div class="title" v-text="title"/>
+  <div class="VisualizationText">
+    <span class="Title" v-text="config.title"/>
   </div>
 </template>
 
 <script>
 export default {
   name: 'PluginComponent',
-  data: (self) => ({
-    logSystem: self.$root.logSystem,
-    eventSystem: self.$root.eventSystem,
-    title: 'Текст',
+  data: () => ({
+    config: {
+      title: '',
+    }
   }),
   methods: {
-    setTitle(text = '') {
-      this.title = text;
+    setConfigProp(prop, value) {
+      this.config[prop] = value;
     },
   },
 };
 </script>
 
 <style lang="sass">
-@import ./styles/component
+.VisualizationText
+  width: 100%
+  height: 100%
+
+  .Title
+    display: flex
+    align-items: center
+    width: 100%
+    height: 100%
+    color: var(--title)
+    font-size: 20px
+    font-weight: 700
+    font-family: 'Proxima Nova'
+    line-height: 29px
+    padding: 0 16px
 </style>
