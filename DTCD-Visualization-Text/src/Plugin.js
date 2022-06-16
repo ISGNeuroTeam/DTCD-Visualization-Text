@@ -1,11 +1,17 @@
 import pluginMeta from './Plugin.Meta';
 import PluginComponent from './PluginComponent.vue';
 
-import { PanelPlugin, LogSystemAdapter, EventSystemAdapter } from './../../DTCD-SDK';
+import { PanelPlugin, LogSystemAdapter } from './../../DTCD-SDK';
 
 export class VisualizationText extends PanelPlugin {
 
-  #title;
+  #id;
+  #logSystem;
+  #vueComponent;
+
+  #config = {
+    title: '',
+  };
 
   static getRegistrationMeta() {
     return pluginMeta;
@@ -14,33 +20,37 @@ export class VisualizationText extends PanelPlugin {
   constructor(guid, selector) {
     super();
 
-    const logSystem = new LogSystemAdapter('0.5.0', guid, pluginMeta.name);
-    const eventSystem = new EventSystemAdapter('0.4.0');
+    this.#id = `${pluginMeta.name}[${guid}]`;
+    this.#logSystem = new LogSystemAdapter('0.5.0', guid, pluginMeta.name);
 
     const { default: VueJS } = this.getDependence('Vue');
 
     const view = new VueJS({
-      data: () => ({ guid, logSystem, eventSystem }),
+      data: () => ({}),
       render: h => h(PluginComponent),
     }).$mount(selector);
 
-    this.vueComponent = view.$children[0];
-    this.#title = 'Текст';
+    this.#vueComponent = view.$children[0];
+    this.#logSystem.debug(`${this.#id} initialization complete`);
+    this.#logSystem.info(`${this.#id} initialization complete`);
   }
 
   setPluginConfig(config = {}) {
-    const { title } = config;
+    this.#logSystem.debug(`Set new config to ${this.#id}`);
+    this.#logSystem.info(`Set new config to ${this.#id}`);
 
-    if (typeof title === 'string') {
-      this.#title = title;
-      this.vueComponent.setTitle(title);
+    const configProps = Object.keys(this.#config);
+
+    for (const [prop, value] of Object.entries(config)) {
+      if (!configProps.includes(prop)) continue;
+      this.#config[prop] = value;
+      this.#vueComponent.setConfigProp(prop, value);
+      this.#logSystem.debug(`${this.#id} config prop value "${prop}" set to "${value}"`);
     }
   }
 
   getPluginConfig() {
-    const config = {};
-    if (this.#title) config.title = this.#title;
-    return config;
+    return { ...this.#config };
   }
 
   setFormSettings(config) {
@@ -59,7 +69,6 @@ export class VisualizationText extends PanelPlugin {
           propName: 'title',
           attrs: {
             label: 'Отображаемый текст',
-            required: true,
           },
         },
       ],
