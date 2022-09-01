@@ -1,6 +1,10 @@
 <template>
   <div class="VisualizationText">
-    <span class="Title" v-text="config.title"/>
+    <span
+      class="Title"
+      v-text="config.title"
+      @click="$root.publishEventClicked()"
+    />
   </div>
 </template>
 
@@ -33,7 +37,7 @@ export default {
     color: var(--title)
     font-size: 20px
     font-weight: 700
-    font-family: 'Proxima Nova'
+    font-family: 'Proxima Nova', serif
     line-height: 29px
     padding: 0 16px
 </style>

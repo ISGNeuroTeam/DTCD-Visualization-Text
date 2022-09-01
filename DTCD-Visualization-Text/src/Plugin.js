@@ -1,13 +1,18 @@
 import pluginMeta from './Plugin.Meta';
 import PluginComponent from './PluginComponent.vue';
 
-import { PanelPlugin, LogSystemAdapter } from './../../DTCD-SDK';
+import {
+  PanelPlugin,
+  LogSystemAdapter,
+  EventSystemAdapter,
+} from './../../DTCD-SDK';
 
 export class VisualizationText extends PanelPlugin {
 
   #id;
   #logSystem;
   #vueComponent;
+  #eventSystem;
 
   #config = {
     title: '',
@@ -22,12 +27,19 @@ export class VisualizationText extends PanelPlugin {
 
     this.#id = `${pluginMeta.name}[${guid}]`;
     this.#logSystem = new LogSystemAdapter('0.5.0', guid, pluginMeta.name);
+    this.#eventSystem = new EventSystemAdapter('0.4.0', guid);
+    this.#eventSystem.registerPluginInstance(this, ['Clicked']);
 
     const { default: VueJS } = this.getDependence('Vue');
 
     const view = new VueJS({
       data: () => ({}),
       render: h => h(PluginComponent),
+      methods: {
+        publishEventClicked: () => {
+          this.#eventSystem.publishEvent('Clicked');
+        }
+      }
     }).$mount(selector);
 
     this.#vueComponent = view.$children[0];
