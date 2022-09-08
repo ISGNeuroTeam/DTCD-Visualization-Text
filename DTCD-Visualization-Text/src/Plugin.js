@@ -10,7 +10,7 @@ export class VisualizationText extends PanelPlugin {
   #vueComponent;
 
   #config = {
-    title: '',
+    ...this.defaultConfig,
   };
 
   static getRegistrationMeta() {
@@ -35,6 +35,15 @@ export class VisualizationText extends PanelPlugin {
     this.#logSystem.info(`${this.#id} initialization complete`);
   }
 
+  setVueComponentPropValue(prop, value) {
+    const methodName = `set${prop.charAt(0).toUpperCase() + prop.slice(1)}`;
+    if (this.#vueComponent[methodName]) {
+      this.#vueComponent[methodName](value)
+    } else {
+      throw new Error(`В компоненте отсутствует метод ${methodName} для присвоения свойства ${prop}`)
+    }
+  }
+
   setPluginConfig(config = {}) {
     this.#logSystem.debug(`Set new config to ${this.#id}`);
     this.#logSystem.info(`Set new config to ${this.#id}`);
@@ -43,8 +52,9 @@ export class VisualizationText extends PanelPlugin {
 
     for (const [prop, value] of Object.entries(config)) {
       if (!configProps.includes(prop)) continue;
+      this.setVueComponentPropValue(prop, value)
+
       this.#config[prop] = value;
-      this.#vueComponent.setConfigProp(prop, value);
       this.#logSystem.debug(`${this.#id} config prop value "${prop}" set to "${value}"`);
     }
   }
@@ -64,9 +74,10 @@ export class VisualizationText extends PanelPlugin {
           component: 'title',
           propValue: 'Общие настройки',
         },
+        ...this.defaultConfig,
         {
           component: 'text',
-          propName: 'title',
+          propName: 'textValue',
           attrs: {
             label: 'Отображаемый текст',
           },

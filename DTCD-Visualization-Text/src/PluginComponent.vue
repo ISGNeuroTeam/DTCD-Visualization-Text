@@ -1,6 +1,6 @@
 <template>
   <div class="VisualizationText">
-    <span class="Title" v-text="config.title"/>
+    <span class="Title" v-text="textValue"/>
   </div>
 </template>
 
@@ -8,13 +8,15 @@
 export default {
   name: 'PluginComponent',
   data: () => ({
-    config: {
-      title: '',
-    }
+    title: '',
+    textValue: '',
   }),
   methods: {
-    setConfigProp(prop, value) {
-      this.config[prop] = value;
+    setTitle(value = '') {
+      this.title = value;
+    },
+    setTextValue(value = '') {
+      this.textValue = value;
     },
   },
 };
@@ -33,7 +35,7 @@ export default {
     color: var(--title)
     font-size: 20px
     font-weight: 700
-    font-family: 'Proxima Nova'
+    font-family: 'Proxima Nova', sans-serif
     line-height: 29px
     padding: 0 16px
 </style>
