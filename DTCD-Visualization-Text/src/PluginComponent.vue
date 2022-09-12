@@ -3,7 +3,7 @@
     <span
       class="Title"
       v-text="config.title"
-      @click="$root.publishEventClicked()"
+      @click="$root.publishEventClicked(config.title)"
     />
   </div>
 </template>

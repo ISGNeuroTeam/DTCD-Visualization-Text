@@ -36,8 +36,8 @@ export class VisualizationText extends PanelPlugin {
       data: () => ({}),
       render: h => h(PluginComponent),
       methods: {
-        publishEventClicked: () => {
-          this.#eventSystem.publishEvent('Clicked');
+        publishEventClicked: (value) => {
+          this.#eventSystem.publishEvent('Clicked', value);
         }
       }
     }).$mount(selector);
