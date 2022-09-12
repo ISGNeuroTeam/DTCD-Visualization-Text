@@ -2,8 +2,8 @@
   <div class="VisualizationText">
     <span
       class="Title"
-      v-text="config.title"
-      @click="$root.publishEventClicked(config.title)"
+      v-text="textValue"
+      @click="$root.publishEventClicked(textValue)"
     />
   </div>
 </template>
@@ -12,13 +12,11 @@
 export default {
   name: 'PluginComponent',
   data: () => ({
-    config: {
-      title: '',
-    }
+    textValue: '',
   }),
   methods: {
-    setConfigProp(prop, value) {
-      this.config[prop] = value;
+    setTextValue(value = '') {
+      this.textValue = value;
     },
   },
 };
