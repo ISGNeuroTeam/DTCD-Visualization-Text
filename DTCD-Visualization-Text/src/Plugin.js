@@ -1,16 +1,21 @@
 import pluginMeta from './Plugin.Meta';
 import PluginComponent from './PluginComponent.vue';
 
-import { PanelPlugin, LogSystemAdapter } from './../../DTCD-SDK';
+import {
+  PanelPlugin,
+  LogSystemAdapter,
+  EventSystemAdapter,
+} from './../../DTCD-SDK';
 
 export class VisualizationText extends PanelPlugin {
 
   #id;
   #logSystem;
   #vueComponent;
+  #eventSystem;
 
   #config = {
-    title: '',
+    textValue: '',
   };
 
   static getRegistrationMeta() {
@@ -22,17 +27,33 @@ export class VisualizationText extends PanelPlugin {
 
     this.#id = `${pluginMeta.name}[${guid}]`;
     this.#logSystem = new LogSystemAdapter('0.5.0', guid, pluginMeta.name);
+    this.#eventSystem = new EventSystemAdapter('0.4.0', guid);
+    this.#eventSystem.registerPluginInstance(this, ['Clicked']);
 
     const { default: VueJS } = this.getDependence('Vue');
 
     const view = new VueJS({
       data: () => ({}),
       render: h => h(PluginComponent),
+      methods: {
+        publishEventClicked: (value) => {
+          this.#eventSystem.publishEvent('Clicked', value);
+        }
+      }
     }).$mount(selector);
 
     this.#vueComponent = view.$children[0];
     this.#logSystem.debug(`${this.#id} initialization complete`);
     this.#logSystem.info(`${this.#id} initialization complete`);
+  }
+
+  setVueComponentPropValue(prop, value) {
+    const methodName = `set${prop.charAt(0).toUpperCase() + prop.slice(1)}`;
+    if (this.#vueComponent[methodName]) {
+      this.#vueComponent[methodName](value)
+    } else {
+      throw new Error(`В компоненте отсутствует метод ${methodName} для присвоения свойства ${prop}`)
+    }
   }
 
   setPluginConfig(config = {}) {
@@ -43,8 +64,9 @@ export class VisualizationText extends PanelPlugin {
 
     for (const [prop, value] of Object.entries(config)) {
       if (!configProps.includes(prop)) continue;
+      this.setVueComponentPropValue(prop, value)
+
       this.#config[prop] = value;
-      this.#vueComponent.setConfigProp(prop, value);
       this.#logSystem.debug(`${this.#id} config prop value "${prop}" set to "${value}"`);
     }
   }
@@ -66,7 +88,7 @@ export class VisualizationText extends PanelPlugin {
         },
         {
           component: 'text',
-          propName: 'title',
+          propName: 'textValue',
           attrs: {
             label: 'Отображаемый текст',
           },
