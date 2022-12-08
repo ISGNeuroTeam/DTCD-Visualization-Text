@@ -32,10 +32,10 @@ export default {
     align-items: center
     width: 100%
     height: 100%
-    color: var(--title)
-    font-size: 20px
-    font-weight: 700
     font-family: 'Proxima Nova', serif
-    line-height: 29px
-    padding: 0 16px
+    padding: 10px
+    color: var(--text_main)
+    font-size: 18px
+    font-weight: 700
+    line-height: 1.4
 </style>

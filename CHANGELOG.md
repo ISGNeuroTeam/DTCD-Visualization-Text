@@ -8,7 +8,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [UNRELEASED]
 
 ### Added
+
 - plugin state API
+
+## Changed
+
+- title styles
 
 ## [0.4.0]
 
